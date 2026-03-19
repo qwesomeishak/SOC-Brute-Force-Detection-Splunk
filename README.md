@@ -43,3 +43,7 @@ Key fields used in the investigation:
 - Windows authentication log analysis
 - Brute force attack detection
 - Security incident documentation
+
+## Data Source
+
+The dataset used in this project was simulated to represent realistic Windows authentication logs. It was created for educational purposes to demonstrate brute force attack detection and SOC investigation techniques.
