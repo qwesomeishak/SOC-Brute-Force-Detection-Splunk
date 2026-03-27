@@ -83,11 +83,10 @@ Possible impacts include:
 ---
 
 ## Skills Demonstrated
-- Splunk SIEM investigation  
-- Writing and using SPL queries  
-- Windows authentication log analysis  
-- Detecting brute force attack patterns  
-- Basic incident analysis and reporting  
+- SIEM log analysis (Splunk)
+- Detection of brute force attacks
+- Windows Event Log analysis (4624, 4625)
+- Incident investigation and reporting
 
 ---
 
