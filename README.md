@@ -9,7 +9,15 @@ I analysed Windows authentication logs to identify suspicious login behaviour, f
 This project reflects a typical SOC analyst workflow, including alert monitoring, log analysis, threat identification, and evidence-based decision making.
 
 ---
+## SOC Workflow  
 
+1. Alert triggered in Splunk  
+2. Investigated authentication logs  
+3. Identified suspicious IP activity  
+4. Correlated failed and successful logins  
+5. Documented findings in an incident report
+
+---
 ## Dataset
 The dataset contains simulated Windows authentication logs, including:
 
