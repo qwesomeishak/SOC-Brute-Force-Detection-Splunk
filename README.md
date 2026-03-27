@@ -1,11 +1,12 @@
-# SOC Brute Force Detection Using Splunk
+## 🚨 SOC Brute Force Detection Using Splunk
 
 ## Project Overview
-As someone starting my journey into cybersecurity and SOC operations, I wanted to understand how brute force attacks are detected and investigated in a real environment. 
 
-In this project, I worked with simulated Windows authentication logs in Splunk to identify suspicious login behaviour. The goal was to investigate a scenario where multiple failed login attempts were followed by a successful login, which is a common pattern seen in brute force attacks.
+In this project, I simulated a real-world brute force attack scenario and investigated it using Splunk SIEM.
 
-This project reflects the basic workflow of a SOC analyst — reviewing alerts, analysing logs, identifying suspicious activity, and making a decision based on the evidence.
+I analysed Windows authentication logs to identify suspicious login behaviour, focusing on a pattern where multiple failed login attempts were followed by a successful login — a common indicator of a brute force attack.
+
+This project reflects a typical SOC analyst workflow, including alert monitoring, log analysis, threat identification, and evidence-based decision making.
 
 ---
 
