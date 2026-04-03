@@ -1,38 +1,38 @@
-# Detection and Investigation Queries
+## 🔍 View All Authentication Events
 
-## 1. All Authentication Events.
-index="window_project_logs" 
-
-| table _time extracted_host user src_ip EventCode status
-
+index=windows (EventCode=4624 OR EventCode=4625)
+| table _time, host, user, src_ip, EventCode, status
 | sort _time
 
-## 2. Failed Logins by IP and User
-index="window_project_logs" EventCode=4625
 
-|stats count as Failed_Attempts by src_ip user
+## 🚫 Failed Login Attempts by IP and User
 
-## 3. Brute Force Detection Rule
-index="window_project_logs" (EventCode=4624 OR EventCode=4625)
+index=windows EventCode=4625
+| stats count as failed_attempts by src_ip, user
+| sort -failed_attempts
 
+
+## ⚠️ Brute Force Detection (Failed + Success Pattern)
+
+index=windows (EventCode=4625 OR EventCode=4624)
 | bin _time span=5m
+| stats count(eval(EventCode=4625)) as failed_attempts 
+        count(eval(EventCode=4624)) as success_attempts 
+        by src_ip, user, _time
+| where failed_attempts >= 5 AND success_attempts >= 1
 
-| stats count(eval(EventCode=4625)) as failures count(eval(EventCode=4624)) as successes by _time src_ip user
 
-| where failures >= 3 AND successes >= 1
+## 🌐 External IP Detection (Filtering Internal Traffic)
 
+index=windows (EventCode=4625 OR EventCode=4624)
+| where NOT (like(src_ip, "192.168.%") OR like(src_ip, "10.%") OR like(src_ip, "172.%"))
+| table _time, user, src_ip, EventCode
 | sort _time
 
-## 4. User Timeline Investigation
-index="window_project_logs" user="john"
 
-| table _time extracted_host src_ip EventCode status
+## 👤 User Activity Timeline
 
-| sort _time
-
-## 5. Attacker IP Investigation
-index="window_project_logs" src_ip="185.23.45.2"
-
-| table _time extracted_host user EventCode status
-
+index=windows (EventCode=4624 OR EventCode=4625)
+| search user="john"
+| table _time, src_ip, EventCode
 | sort _time
