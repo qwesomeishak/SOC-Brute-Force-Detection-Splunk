@@ -1,24 +1,32 @@
-## 🚨 SOC Brute Force Detection Using Splunk
+# SOC Brute Force Detection and Investigation Using Splunk
 
 ## Project Overview
 
-In this project, I simulated a real-world brute force attack scenario and investigated it using Splunk SIEM.
+In this project, I used Splunk to detect and investigate suspicious Windows login activity linked to a possible brute force attack.
 
-I analysed Windows authentication logs to identify suspicious login behaviour, focusing on a pattern where multiple failed login attempts were followed by a successful login — a common indicator of a brute force attack.
+By analysing Windows authentication logs, I identified a pattern where multiple failed login attempts were followed by a successful login from the same external IP address against the same user account. This is a common indicator of attempted credential compromise and required further investigation.
 
-This project reflects a typical SOC analyst workflow, including alert monitoring, log analysis, threat identification, and evidence-based decision making.
+I focused on Event IDs 4625 and 4624 to trace the activity, understand what happened, and assess the potential security risk. I then documented the findings, explained the likely impact, and outlined practical response actions.
+
+This project reflects a typical SOC analyst workflow, including detection, validation, log analysis, event correlation, timeline reconstruction, incident assessment, and response recommendation.
 
 ---
+
 ## SOC Workflow  
 
-1. Alert triggered in Splunk  
-2. Investigated authentication logs  
-3. Identified suspicious IP activity  
-4. Correlated failed and successful logins  
-5. Documented findings in an incident report
+1. Alert triggered in Splunk indicating unusual authentication activity  
+2. Validated the alert to determine whether it was a true or false positive  
+3. Analysed Windows authentication logs (Event IDs 4624 and 4625)  
+4. Correlated multiple failed login attempts with subsequent successful logins  
+5. Investigated source IP addresses to distinguish between internal and external activity  
+6. Built a timeline of events to understand the sequence of the activity  
+7. Assessed the likelihood of credential compromise and potential impact  
+8. Documented findings and recommended appropriate response actions  
 
 ---
+
 ## Dataset
+
 The dataset contains simulated Windows authentication logs, including:
 
 - **EventCode 4624** – Successful login  
@@ -51,52 +59,82 @@ Key fields used during the investigation:
 ---
 
 ## Attack Timeline
-1. Multiple failed login attempts (EventCode 4625) were observed from external IP addresses  
-2. User **john** had the highest number of failed login attempts  
-3. A successful login (EventCode 4624) occurred after repeated failures  
-4. Activity was seen from both external and internal IP addresses  
+
+- Repeated failed login attempts (EventCode 4625) were observed from the external IP address **185.23.45.2** targeting user **john**  
+- The failed attempts occurred in short time intervals, indicating automated or scripted activity  
+- A successful login (EventCode 4624) was recorded shortly after multiple failed attempts from the same IP address  
+- Additional successful logins were observed from internal IP addresses, suggesting normal activity after the suspicious event  
 
 ---
 
 ## Analysis
-The pattern of repeated failed logins followed by a successful login suggests brute force behaviour. 
 
-The involvement of external IP addresses increases the likelihood that this activity is not normal user behaviour. The successful login after multiple failures raises concern that valid credentials may have been guessed or compromised.
+The observed pattern of multiple failed login attempts followed by a successful authentication from the same external IP address is consistent with brute force behaviour.
+
+The frequency and timing of the failed attempts suggest automated activity rather than normal user error. The successful login that follows increases the likelihood that valid credentials were eventually guessed or obtained.
+
+While this strongly indicates suspicious behaviour, confirmation of full account compromise would require additional context such as endpoint activity, user behaviour, or authentication logs from other systems.
 
 ---
 
 ## Conclusion
-This activity is classified as **suspicious** and indicates a potential brute force attack that may have resulted in account compromise.
+
+This activity is classified as **suspicious** and aligns with a potential brute force attack that may have resulted in credential compromise.
 
 ---
 
 ## Impact Assessment
-This activity represents a potential security risk due to successful authentication after multiple failed attempts.
+
+This activity presents a potential security risk due to successful authentication following multiple failed attempts.
 
 Possible impacts include:
-- Unauthorised access to user accounts  
-- Exposure of sensitive information linked to the account  
-- Risk of further malicious activity if access is not controlled  
-- Potential privilege misuse depending on the account level  
+- Unauthorised access to the user account  
+- Exposure of sensitive information associated with the account  
+- Risk of further malicious actions such as lateral movement  
+- Potential misuse of privileges depending on the account level  
 
 ---
 
 ## Response Actions
-- Monitor affected user accounts for unusual activity  
-- Reset passwords or enforce password changes  
-- Investigate and block suspicious external IP addresses if necessary  
+
+- Reset or enforce password changes for the affected account  
+- Monitor the account for any unusual or unauthorised activity  
+- Investigate and block or restrict suspicious external IP addresses  
 - Implement account lockout policies to reduce brute force attempts  
-- Continue monitoring for similar patterns across the environment  
+- Enable multi-factor authentication (MFA) to strengthen account security  
+- Review similar login patterns across other user accounts  
+
+---
+
+## MITRE ATT&CK Mapping
+
+- **Tactic:** Credential Access  
+- **Technique:** T1110 – Brute Force  
+
+This activity aligns with brute force techniques where attackers attempt multiple password combinations to gain access to user accounts.
+
+---
+
+## Limitations
+
+- The dataset is simulated and may not reflect all real-world attack variations  
+- Limited log fields restrict deeper behavioural analysis  
+- No endpoint or network telemetry was available to confirm post-login activity  
+- Additional logs (e.g. Active Directory, VPN, EDR) would improve investigation accuracy  
 
 ---
 
 ## Skills Demonstrated
-- SIEM log analysis (Splunk)
-- Detection of brute force attacks
-- Windows Event Log analysis (4624, 4625)
-- Incident investigation and reporting
+
+- SIEM log analysis using Splunk  
+- Detection and investigation of brute force attacks  
+- Windows Event Log analysis (Event IDs 4624, 4625)  
+- Event correlation and timeline reconstruction  
+- Incident analysis and reporting  
+- Security risk assessment and response planning  
 
 ---
 
 ## Data Source
+
 The dataset used in this project was simulated to represent realistic Windows authentication logs. It was created for learning purposes to demonstrate brute force detection and SOC investigation techniques.
